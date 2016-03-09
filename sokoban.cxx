@@ -147,6 +147,15 @@ static std::string getNUSMVField(const Field field)
            
         case Field::BLOCK:
             return "BLOCK";
+			
+		case Field::GOAL:
+            return "GOAL";
+			
+		case Field::BLOCK_ON_GOAL:
+            return "GOAL";
+			
+        case Field::MAN_ON_GOAL:
+            return "GOAL";
         
 		default :
 			return "EMPTY";
@@ -159,6 +168,8 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 {
 	size_t man_x;
 	size_t man_y;
+	
+	std::vector<std::pair<size_t, size_t>> goals;
 
 	stream << "MODULE main\n";
 	stream << "VAR\n";
@@ -166,12 +177,13 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 	stream << "\tN_ROWS : " << (rows-1) << ".." << (rows-1) << ";\n";
 	stream << "\tN_COLUMNS : " << (cols-1) << ".." << (cols-1) << ";\n";
 	stream << "\n";
-	stream << "\tmatrix : array 0..N_ROWS of array 0..N_COLUMNS of {WALL, EMPTY, BLOCK };\n";
-	stream << "\n";
 	stream << "\tman_x : 0..N_ROWS;\n";
 	stream << "\tman_y : 0..N_COLUMNS;\n";
 	stream << "\tman_move : {LEFT, RIGHT, UP, DOWN};\n";
 	stream << "\n";
+	stream << "\tmatrix : array 0..N_ROWS of array 0..N_COLUMNS of {WALL, EMPTY, BLOCK };\n";
+	stream << "\n";
+
 	
 	
 	stream << "ASSIGN\n";
@@ -184,6 +196,11 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 				man_y = j;
 				value = "EMPTY";
 			}
+			
+			if(value == "GOAL"){
+				goals.push_back(std::make_pair(i, j));
+			}
+			
 			stream << "\tinit(matrix[" << i << "][" << j << "]) := " << value << ";\n";
         }
         stream << "\n";
@@ -218,6 +235,13 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 	for (size_t i = 0; i < screen.size(); i++) {
         std::vector<Field> row = screen[i];
         for (size_t j = 0; j < row.size(); j++) {
+			std::string value = getNUSMVField(row[j]);
+			if(value == "WALL"){
+				stream << "\tnext(matrix[" << i << "][" << j << "]) := matrix[" << i << "][" << j << "];\n";
+				continue;
+			}
+		
+		
 			stream << "\tnext(matrix[" << i << "][" << j << "]) :=\n";
 			stream << "\tcase\n";
 			
@@ -255,6 +279,27 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 	   }
         stream << "\n";
     }	
+	
+	std::stringstream sspec1;
+	std::stringstream sspec2;
+		
+	sspec1 << "CTLSPEC EF (";
+	sspec2 << "CTLSPEC !EF (";
+		
+	for (size_t i = 0; i < goals.size(); i++) {
+		auto pair = goals[i];
+			
+		sspec1 << "matrix[" << pair.first << "][" << pair.second << "] = BLOCK";
+		sspec2 << "matrix[" << pair.first << "][" << pair.second << "] = BLOCK";
+			
+		if(i < goals.size()-1){
+			sspec1 << " & ";
+			sspec2 << " & ";
+		}
+	}
+		
+	stream << sspec1.str() << ");\n";
+	stream << sspec2.str() << ");";	
 }
 
 int main(int argc, char* argv[]) {
