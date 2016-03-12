@@ -8,7 +8,7 @@ VAR
 	man_y : 0..N_COLUMNS;
 	man_move : {LEFT, RIGHT, UP, DOWN};
 
-	matrix : array 0..N_ROWS of array 0..N_COLUMNS of {WALL, EMPTY, BLOCK };
+	matrix : array 0..N_ROWS of array 0..N_COLUMNS of {WALL, EMPTY, BLOCK};
 
 ASSIGN
 	init(matrix[0][0]) := WALL;
@@ -39,12 +39,12 @@ ASSIGN
 	init(matrix[2][7]) := WALL;
 
 	init(matrix[3][0]) := WALL;
-	init(matrix[3][1]) := GOAL;
-	init(matrix[3][2]) := GOAL;
+	init(matrix[3][1]) := EMPTY;
+	init(matrix[3][2]) := EMPTY;
 	init(matrix[3][3]) := BLOCK;
 	init(matrix[3][4]) := EMPTY;
 	init(matrix[3][5]) := EMPTY;
-	init(matrix[3][6]) := GOAL;
+	init(matrix[3][6]) := EMPTY;
 	init(matrix[3][7]) := WALL;
 
 	init(matrix[4][0]) := WALL;
@@ -130,11 +130,6 @@ ASSIGN
 	next(matrix[2][1]) := matrix[2][1];
 	next(matrix[2][2]) :=
 	case
-		(man_move=RIGHT) & (man_x = 2) & (man_y = 1) & (matrix[2][2] = BLOCK) & (matrix[2][3] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 2) & (man_y = 3) & (matrix[2][2] = BLOCK) & (matrix[2][1] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 1) & (man_y = 2) & (matrix[2][2] = BLOCK) & (matrix[3][2] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 3) & (man_y = 2) & (matrix[2][2] = BLOCK) & (matrix[1][2] = EMPTY) : EMPTY;
-
 		(man_move=RIGHT) & (man_x = 2) & (man_y = 0) & (matrix[2][1] = BLOCK) & (matrix[2][2] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 2) & (man_y = 4) & (matrix[2][3] = BLOCK) & (matrix[2][2] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 0) & (man_y = 2) & (matrix[1][2] = BLOCK) & (matrix[2][2] = EMPTY) : BLOCK;
@@ -144,11 +139,6 @@ ASSIGN
 
 	next(matrix[2][3]) :=
 	case
-		(man_move=RIGHT) & (man_x = 2) & (man_y = 2) & (matrix[2][3] = BLOCK) & (matrix[2][4] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 2) & (man_y = 4) & (matrix[2][3] = BLOCK) & (matrix[2][2] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 1) & (man_y = 3) & (matrix[2][3] = BLOCK) & (matrix[3][3] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 3) & (man_y = 3) & (matrix[2][3] = BLOCK) & (matrix[1][3] = EMPTY) : EMPTY;
-
 		(man_move=RIGHT) & (man_x = 2) & (man_y = 1) & (matrix[2][2] = BLOCK) & (matrix[2][3] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 2) & (man_y = 5) & (matrix[2][4] = BLOCK) & (matrix[2][3] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 0) & (man_y = 3) & (matrix[1][3] = BLOCK) & (matrix[2][3] = EMPTY) : BLOCK;
@@ -164,11 +154,6 @@ ASSIGN
 	next(matrix[3][0]) := matrix[3][0];
 	next(matrix[3][1]) :=
 	case
-		(man_move=RIGHT) & (man_x = 3) & (man_y = 0) & (matrix[3][1] = BLOCK) & (matrix[3][2] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 3) & (man_y = 2) & (matrix[3][1] = BLOCK) & (matrix[3][0] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 2) & (man_y = 1) & (matrix[3][1] = BLOCK) & (matrix[4][1] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 4) & (man_y = 1) & (matrix[3][1] = BLOCK) & (matrix[2][1] = EMPTY) : EMPTY;
-
 		(man_move=LEFT) & (man_x = 3) & (man_y = 3) & (matrix[3][2] = BLOCK) & (matrix[3][1] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 1) & (man_y = 1) & (matrix[2][1] = BLOCK) & (matrix[3][1] = EMPTY) : BLOCK;
 		(man_move=UP) & (man_x = 5) & (man_y = 1) & (matrix[4][1] = BLOCK) & (matrix[3][1] = EMPTY) : BLOCK;
@@ -179,8 +164,6 @@ ASSIGN
 	case
 		(man_move=RIGHT) & (man_x = 3) & (man_y = 1) & (matrix[3][2] = BLOCK) & (matrix[3][3] = EMPTY) : EMPTY;
 		(man_move=LEFT) & (man_x = 3) & (man_y = 3) & (matrix[3][2] = BLOCK) & (matrix[3][1] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 2) & (man_y = 2) & (matrix[3][2] = BLOCK) & (matrix[4][2] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 4) & (man_y = 2) & (matrix[3][2] = BLOCK) & (matrix[2][2] = EMPTY) : EMPTY;
 
 		(man_move=RIGHT) & (man_x = 3) & (man_y = 0) & (matrix[3][1] = BLOCK) & (matrix[3][2] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 3) & (man_y = 4) & (matrix[3][3] = BLOCK) & (matrix[3][2] = EMPTY) : BLOCK;
@@ -207,8 +190,6 @@ ASSIGN
 	case
 		(man_move=RIGHT) & (man_x = 3) & (man_y = 3) & (matrix[3][4] = BLOCK) & (matrix[3][5] = EMPTY) : EMPTY;
 		(man_move=LEFT) & (man_x = 3) & (man_y = 5) & (matrix[3][4] = BLOCK) & (matrix[3][3] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 2) & (man_y = 4) & (matrix[3][4] = BLOCK) & (matrix[4][4] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 4) & (man_y = 4) & (matrix[3][4] = BLOCK) & (matrix[2][4] = EMPTY) : EMPTY;
 
 		(man_move=RIGHT) & (man_x = 3) & (man_y = 2) & (matrix[3][3] = BLOCK) & (matrix[3][4] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 3) & (man_y = 6) & (matrix[3][5] = BLOCK) & (matrix[3][4] = EMPTY) : BLOCK;
@@ -221,8 +202,6 @@ ASSIGN
 	case
 		(man_move=RIGHT) & (man_x = 3) & (man_y = 4) & (matrix[3][5] = BLOCK) & (matrix[3][6] = EMPTY) : EMPTY;
 		(man_move=LEFT) & (man_x = 3) & (man_y = 6) & (matrix[3][5] = BLOCK) & (matrix[3][4] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 2) & (man_y = 5) & (matrix[3][5] = BLOCK) & (matrix[4][5] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 4) & (man_y = 5) & (matrix[3][5] = BLOCK) & (matrix[2][5] = EMPTY) : EMPTY;
 
 		(man_move=RIGHT) & (man_x = 3) & (man_y = 3) & (matrix[3][4] = BLOCK) & (matrix[3][5] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 3) & (man_y = 7) & (matrix[3][6] = BLOCK) & (matrix[3][5] = EMPTY) : BLOCK;
@@ -233,11 +212,6 @@ ASSIGN
 
 	next(matrix[3][6]) :=
 	case
-		(man_move=RIGHT) & (man_x = 3) & (man_y = 5) & (matrix[3][6] = BLOCK) & (matrix[3][7] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 3) & (man_y = 7) & (matrix[3][6] = BLOCK) & (matrix[3][5] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 2) & (man_y = 6) & (matrix[3][6] = BLOCK) & (matrix[4][6] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 4) & (man_y = 6) & (matrix[3][6] = BLOCK) & (matrix[2][6] = EMPTY) : EMPTY;
-
 		(man_move=RIGHT) & (man_x = 3) & (man_y = 4) & (matrix[3][5] = BLOCK) & (matrix[3][6] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 1) & (man_y = 6) & (matrix[2][6] = BLOCK) & (matrix[3][6] = EMPTY) : BLOCK;
 		(man_move=UP) & (man_x = 5) & (man_y = 6) & (matrix[4][6] = BLOCK) & (matrix[3][6] = EMPTY) : BLOCK;
@@ -249,8 +223,6 @@ ASSIGN
 	next(matrix[4][0]) := matrix[4][0];
 	next(matrix[4][1]) :=
 	case
-		(man_move=RIGHT) & (man_x = 4) & (man_y = 0) & (matrix[4][1] = BLOCK) & (matrix[4][2] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 4) & (man_y = 2) & (matrix[4][1] = BLOCK) & (matrix[4][0] = EMPTY) : EMPTY;
 		(man_move=DOWN) & (man_x = 3) & (man_y = 1) & (matrix[4][1] = BLOCK) & (matrix[5][1] = EMPTY) : EMPTY;
 		(man_move=UP) & (man_x = 5) & (man_y = 1) & (matrix[4][1] = BLOCK) & (matrix[3][1] = EMPTY) : EMPTY;
 
@@ -263,8 +235,6 @@ ASSIGN
 	next(matrix[4][2]) := matrix[4][2];
 	next(matrix[4][3]) :=
 	case
-		(man_move=RIGHT) & (man_x = 4) & (man_y = 2) & (matrix[4][3] = BLOCK) & (matrix[4][4] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 4) & (man_y = 4) & (matrix[4][3] = BLOCK) & (matrix[4][2] = EMPTY) : EMPTY;
 		(man_move=DOWN) & (man_x = 3) & (man_y = 3) & (matrix[4][3] = BLOCK) & (matrix[5][3] = EMPTY) : EMPTY;
 		(man_move=UP) & (man_x = 5) & (man_y = 3) & (matrix[4][3] = BLOCK) & (matrix[3][3] = EMPTY) : EMPTY;
 
@@ -279,8 +249,6 @@ ASSIGN
 	case
 		(man_move=RIGHT) & (man_x = 4) & (man_y = 3) & (matrix[4][4] = BLOCK) & (matrix[4][5] = EMPTY) : EMPTY;
 		(man_move=LEFT) & (man_x = 4) & (man_y = 5) & (matrix[4][4] = BLOCK) & (matrix[4][3] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 3) & (man_y = 4) & (matrix[4][4] = BLOCK) & (matrix[5][4] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 5) & (man_y = 4) & (matrix[4][4] = BLOCK) & (matrix[3][4] = EMPTY) : EMPTY;
 
 		(man_move=RIGHT) & (man_x = 4) & (man_y = 2) & (matrix[4][3] = BLOCK) & (matrix[4][4] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 4) & (man_y = 6) & (matrix[4][5] = BLOCK) & (matrix[4][4] = EMPTY) : BLOCK;
@@ -305,8 +273,6 @@ ASSIGN
 
 	next(matrix[4][6]) :=
 	case
-		(man_move=RIGHT) & (man_x = 4) & (man_y = 5) & (matrix[4][6] = BLOCK) & (matrix[4][7] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 4) & (man_y = 7) & (matrix[4][6] = BLOCK) & (matrix[4][5] = EMPTY) : EMPTY;
 		(man_move=DOWN) & (man_x = 3) & (man_y = 6) & (matrix[4][6] = BLOCK) & (matrix[5][6] = EMPTY) : EMPTY;
 		(man_move=UP) & (man_x = 5) & (man_y = 6) & (matrix[4][6] = BLOCK) & (matrix[3][6] = EMPTY) : EMPTY;
 
@@ -321,11 +287,6 @@ ASSIGN
 	next(matrix[5][0]) := matrix[5][0];
 	next(matrix[5][1]) :=
 	case
-		(man_move=RIGHT) & (man_x = 5) & (man_y = 0) & (matrix[5][1] = BLOCK) & (matrix[5][2] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 5) & (man_y = 2) & (matrix[5][1] = BLOCK) & (matrix[5][0] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 4) & (man_y = 1) & (matrix[5][1] = BLOCK) & (matrix[6][1] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 6) & (man_y = 1) & (matrix[5][1] = BLOCK) & (matrix[4][1] = EMPTY) : EMPTY;
-
 		(man_move=LEFT) & (man_x = 5) & (man_y = 3) & (matrix[5][2] = BLOCK) & (matrix[5][1] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 3) & (man_y = 1) & (matrix[4][1] = BLOCK) & (matrix[5][1] = EMPTY) : BLOCK;
 		(man_move=UP) & (man_x = 7) & (man_y = 1) & (matrix[6][1] = BLOCK) & (matrix[5][1] = EMPTY) : BLOCK;
@@ -336,8 +297,6 @@ ASSIGN
 	case
 		(man_move=RIGHT) & (man_x = 5) & (man_y = 1) & (matrix[5][2] = BLOCK) & (matrix[5][3] = EMPTY) : EMPTY;
 		(man_move=LEFT) & (man_x = 5) & (man_y = 3) & (matrix[5][2] = BLOCK) & (matrix[5][1] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 4) & (man_y = 2) & (matrix[5][2] = BLOCK) & (matrix[6][2] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 6) & (man_y = 2) & (matrix[5][2] = BLOCK) & (matrix[4][2] = EMPTY) : EMPTY;
 
 		(man_move=RIGHT) & (man_x = 5) & (man_y = 0) & (matrix[5][1] = BLOCK) & (matrix[5][2] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 5) & (man_y = 4) & (matrix[5][3] = BLOCK) & (matrix[5][2] = EMPTY) : BLOCK;
@@ -348,11 +307,6 @@ ASSIGN
 
 	next(matrix[5][3]) :=
 	case
-		(man_move=RIGHT) & (man_x = 5) & (man_y = 2) & (matrix[5][3] = BLOCK) & (matrix[5][4] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 5) & (man_y = 4) & (matrix[5][3] = BLOCK) & (matrix[5][2] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 4) & (man_y = 3) & (matrix[5][3] = BLOCK) & (matrix[6][3] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 6) & (man_y = 3) & (matrix[5][3] = BLOCK) & (matrix[4][3] = EMPTY) : EMPTY;
-
 		(man_move=RIGHT) & (man_x = 5) & (man_y = 1) & (matrix[5][2] = BLOCK) & (matrix[5][3] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 5) & (man_y = 5) & (matrix[5][4] = BLOCK) & (matrix[5][3] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 3) & (man_y = 3) & (matrix[4][3] = BLOCK) & (matrix[5][3] = EMPTY) : BLOCK;
@@ -363,8 +317,6 @@ ASSIGN
 	next(matrix[5][4]) := matrix[5][4];
 	next(matrix[5][5]) :=
 	case
-		(man_move=RIGHT) & (man_x = 5) & (man_y = 4) & (matrix[5][5] = BLOCK) & (matrix[5][6] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 5) & (man_y = 6) & (matrix[5][5] = BLOCK) & (matrix[5][4] = EMPTY) : EMPTY;
 		(man_move=DOWN) & (man_x = 4) & (man_y = 5) & (matrix[5][5] = BLOCK) & (matrix[6][5] = EMPTY) : EMPTY;
 		(man_move=UP) & (man_x = 6) & (man_y = 5) & (matrix[5][5] = BLOCK) & (matrix[4][5] = EMPTY) : EMPTY;
 
@@ -377,8 +329,6 @@ ASSIGN
 
 	next(matrix[5][6]) :=
 	case
-		(man_move=RIGHT) & (man_x = 5) & (man_y = 5) & (matrix[5][6] = BLOCK) & (matrix[5][7] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 5) & (man_y = 7) & (matrix[5][6] = BLOCK) & (matrix[5][5] = EMPTY) : EMPTY;
 		(man_move=DOWN) & (man_x = 4) & (man_y = 6) & (matrix[5][6] = BLOCK) & (matrix[6][6] = EMPTY) : EMPTY;
 		(man_move=UP) & (man_x = 6) & (man_y = 6) & (matrix[5][6] = BLOCK) & (matrix[4][6] = EMPTY) : EMPTY;
 
@@ -397,11 +347,6 @@ ASSIGN
 	next(matrix[6][4]) := matrix[6][4];
 	next(matrix[6][5]) :=
 	case
-		(man_move=RIGHT) & (man_x = 6) & (man_y = 4) & (matrix[6][5] = BLOCK) & (matrix[6][6] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 6) & (man_y = 6) & (matrix[6][5] = BLOCK) & (matrix[6][4] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 5) & (man_y = 5) & (matrix[6][5] = BLOCK) & (matrix[7][5] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 7) & (man_y = 5) & (matrix[6][5] = BLOCK) & (matrix[5][5] = EMPTY) : EMPTY;
-
 		(man_move=RIGHT) & (man_x = 6) & (man_y = 3) & (matrix[6][4] = BLOCK) & (matrix[6][5] = EMPTY) : BLOCK;
 		(man_move=LEFT) & (man_x = 6) & (man_y = 7) & (matrix[6][6] = BLOCK) & (matrix[6][5] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 4) & (man_y = 5) & (matrix[5][5] = BLOCK) & (matrix[6][5] = EMPTY) : BLOCK;
@@ -410,11 +355,6 @@ ASSIGN
 
 	next(matrix[6][6]) :=
 	case
-		(man_move=RIGHT) & (man_x = 6) & (man_y = 5) & (matrix[6][6] = BLOCK) & (matrix[6][7] = EMPTY) : EMPTY;
-		(man_move=LEFT) & (man_x = 6) & (man_y = 7) & (matrix[6][6] = BLOCK) & (matrix[6][5] = EMPTY) : EMPTY;
-		(man_move=DOWN) & (man_x = 5) & (man_y = 6) & (matrix[6][6] = BLOCK) & (matrix[7][6] = EMPTY) : EMPTY;
-		(man_move=UP) & (man_x = 7) & (man_y = 6) & (matrix[6][6] = BLOCK) & (matrix[5][6] = EMPTY) : EMPTY;
-
 		(man_move=RIGHT) & (man_x = 6) & (man_y = 4) & (matrix[6][5] = BLOCK) & (matrix[6][6] = EMPTY) : BLOCK;
 		(man_move=DOWN) & (man_x = 4) & (man_y = 6) & (matrix[5][6] = BLOCK) & (matrix[6][6] = EMPTY) : BLOCK;
 		TRUE : matrix[6][6];

@@ -181,7 +181,7 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 	stream << "\tman_y : 0..N_COLUMNS;\n";
 	stream << "\tman_move : {LEFT, RIGHT, UP, DOWN};\n";
 	stream << "\n";
-	stream << "\tmatrix : array 0..N_ROWS of array 0..N_COLUMNS of {WALL, EMPTY, BLOCK };\n";
+	stream << "\tmatrix : array 0..N_ROWS of array 0..N_COLUMNS of {WALL, EMPTY, BLOCK};\n";
 	stream << "\n";
 
 	
@@ -194,11 +194,12 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 			if(value == "MAN"){
 				man_x = i;
 				man_y = j;
-				value = "EMPTY";
+				value = "EMPTY";				
 			}
 			
 			if(value == "GOAL"){
 				goals.push_back(std::make_pair(i, j));
+				value = "EMPTY";
 			}
 			
 			stream << "\tinit(matrix[" << i << "][" << j << "]) := " << value << ";\n";
@@ -245,16 +246,23 @@ static void WriteNUSMV(std::ofstream& stream, std::vector<std::vector<Field>> sc
 			stream << "\tnext(matrix[" << i << "][" << j << "]) :=\n";
 			stream << "\tcase\n";
 			
-			if(j > 0 && j < row.size() - 1){
+			bool empty = false;
+			
+			if(j > 0 && j < row.size() - 1 && getNUSMVField(screen[i][j-1]) != "WALL" && getNUSMVField(screen[i][j+1]) != "WALL"){
 				stream << "\t\t(man_move=RIGHT) & (man_x = " << i << ") & (man_y = " << (j-1) << ") & (matrix[" << i << "][" << j << "] = BLOCK) & (matrix[" << i << "][" << (j+1) << "] = EMPTY) : EMPTY;\n";
 				stream << "\t\t(man_move=LEFT) & (man_x = " << i << ") & (man_y = " << (j+1) << ") & (matrix[" << i << "][" << j << "] = BLOCK) & (matrix[" << i << "][" << (j-1) << "] = EMPTY) : EMPTY;\n";
+				
+				empty = true;
 			}
 			
-			if(i > 0 && i < screen.size() - 1){
+			if(i > 0 && i < screen.size() - 1 && getNUSMVField(screen[i-1][j]) != "WALL" && getNUSMVField(screen[i+1][j]) != "WALL"){
 				stream << "\t\t(man_move=DOWN) & (man_x = " << (i-1) << ") & (man_y = " << j << ") & (matrix[" << i << "][" << j << "] = BLOCK) & (matrix[" << (i+1) << "][" << j << "] = EMPTY) : EMPTY;\n";
 				stream << "\t\t(man_move=UP) & (man_x = " << (i+1) << ") & (man_y = " << j << ") & (matrix[" << i << "][" << j << "] = BLOCK) & (matrix[" << (i-1) << "][" << j << "] = EMPTY) : EMPTY;\n";
+			
+				empty = true;
 			}
 			
+				if(empty)
 				stream << "\n";
 			
 			if(j > 1){ 
